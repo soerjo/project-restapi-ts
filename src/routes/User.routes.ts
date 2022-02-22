@@ -1,13 +1,15 @@
 import UserController from '../controllers/User.controller';
 import { updateUserSchema, createUserSchema, getUserbyIdSchema } from '../middleware/validation/UserRoute.validation';
 import { validation } from '../middleware/validation.midlleware';
-import BaseRoute, { IRouter } from './BaseRoute';
+import BaseRoute, { IRoutes } from './BaseRoute';
 import { Methods } from './BaseRoute';
+import { Authorization } from '../middleware/Authorization.middleware';
 
 class UserRoutes extends BaseRoute {
+  gateMiddleware = Authorization;
   path = '/user';
 
-  routes: IRouter[] = [
+  routes: IRoutes[] = [
     {
       methods: Methods.GET,
       path: '/:id',

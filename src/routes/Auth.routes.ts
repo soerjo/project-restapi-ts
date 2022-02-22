@@ -1,13 +1,14 @@
 import AuthController from '../controllers/Auth.controller';
 import { validation } from '../middleware/validation.midlleware';
-import BaseRoute, { IRouter } from './BaseRoute';
+import BaseRoute, { IRoutes } from './BaseRoute';
 import { Methods } from './BaseRoute';
-import { registSchema } from '../middleware/validation/auth.validation';
+import { loginSchema, registSchema } from '../middleware/validation/auth.validation';
+import { Authorization } from '../middleware/Authorization.middleware';
 
 class AuthRoutes extends BaseRoute {
-  path = '/auth';
+  protected path = '/auth';
 
-  routes: IRouter[] = [
+  routes: IRoutes[] = [
     {
       methods: Methods.POST,
       path: '/regist',
@@ -17,7 +18,7 @@ class AuthRoutes extends BaseRoute {
     {
       methods: Methods.POST,
       path: '/login',
-      middleware: [],
+      middleware: [validation(loginSchema)],
       handler: AuthController.login,
     },
     {
@@ -31,6 +32,12 @@ class AuthRoutes extends BaseRoute {
       path: '/:userId/:token',
       middleware: [],
       handler: AuthController.confirm,
+    },
+    {
+      methods: Methods.DELETE,
+      path: '/logout',
+      middleware: [Authorization],
+      handler: AuthController.logout,
     },
   ];
 }

@@ -11,14 +11,18 @@ export enum Methods {
 type Validation = (
   schema: Schema,
 ) => (req: Request, res: Response, next: NextFunction) => void | Response<any, Record<string, any>>;
-type Middleware = (req: Request, res: Response, next: NextFunction) => void | Response<any, Record<string, any>>;
+type Middleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => void | Response<any, Record<string, any>> | Promise<void | Response<any, Record<string, any>>>;
 type Handler = (
   eq: Request,
   res: Response,
   next: NextFunction,
-) => void | Promise<void> | Promise<Response<any, Record<string, any>> | undefined>;
+) => void | Promise<void | Response<any, Record<string, any>> | undefined>;
 
-export interface IRouter {
+export interface IRoutes {
   path: string;
   methods: Methods;
   middleware: Array<Validation | Middleware>;
@@ -26,11 +30,15 @@ export interface IRouter {
 }
 
 abstract class BaseRoute {
-  abstract path: string;
-  abstract routes: Array<IRouter>;
+  protected abstract path: string;
+  abstract routes: Array<IRoutes>;
+  protected gateMiddleware: Middleware | undefined;
   protected router: Router = Router();
 
   setRoutes(): Router {
+    if (this.gateMiddleware) {
+      this.router.use(`${this.path}`, this.gateMiddleware);
+    }
     this.routes.forEach((route) => {
       this.router[route.methods](`${this.path}${route.path}`, route.middleware, route.handler);
     });

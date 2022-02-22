@@ -14,4 +14,7 @@ Promise.resolve()
   .then(() => server.routes(routes))
   .then(() => db(config.dbUri))
   .then(() => server.run())
-  .catch((err) => log.error(err));
+  .catch((err) => {
+    log.error(err);
+    process.exit(1);
+  });
