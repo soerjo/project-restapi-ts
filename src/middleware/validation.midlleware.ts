@@ -13,9 +13,9 @@ class Validation {
     const { error } = schema.validate(req, this.optionValidate);
     if (!error) return next();
 
-    log.error(error, 'isi Error:');
     const { details } = error as ValidationError;
-    return res.status(404).json({ error: [...details] });
+    // log.error(details);
+    return res.status(400).json({ error: details.map((detail) => detail.message) });
   };
 }
 

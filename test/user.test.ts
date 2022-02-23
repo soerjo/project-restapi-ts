@@ -6,8 +6,8 @@ const app = new App().app;
 
 describe('TEST USER ROUTES', () => {
   const bodyReq = {
-    userName: 'irenne',
-    userEmail: 'irenne@gmail.com',
+    userName: 'bujanksementara',
+    userEmail: 'bujanksementara@gmail.com',
     password: 'akucintayesus',
     passConfirm: 'akucintayesus',
   };
@@ -24,5 +24,14 @@ describe('TEST USER ROUTES', () => {
     const res = await request(app).post('/api/user/').send(bodyReq);
     expect(res.body).toHaveProperty('msg');
     expect(res.body).toHaveProperty('data');
+  });
+
+  test('CREATE USER', async () => {
+    const mockCreateUser = jest.fn(() => bodyReq);
+    jest.spyOn(userModel, 'create').mockImplementation(() => mockCreateUser());
+
+    const res = await request(app).post('/api/user/').send({});
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty('error');
   });
 });

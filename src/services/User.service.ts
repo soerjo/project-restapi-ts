@@ -29,8 +29,7 @@ class UserService {
         status: user.status,
       };
     } catch (error: unknown) {
-      log.error(error);
-      throw error;
+      throw new Error('error');
     }
   };
 

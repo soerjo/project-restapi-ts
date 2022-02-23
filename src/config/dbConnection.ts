@@ -2,10 +2,11 @@ import mongoose from 'mongoose';
 import log from '../utils/log';
 import config from '../config/default';
 
-const options = {
+const options: mongoose.ConnectOptions = {
   maxPoolSize: 10, // Maintain up to 10 socket connections
   serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
   socketTimeoutMS: 500, // Close sockets after 0.5 seconds of inactivity
+  connectTimeoutMS: 1000,
 };
 
 export const db = mongoose.createConnection(config.dbUri, options);

@@ -1,4 +1,3 @@
-import { IController } from '../interfaces/Controller.interface';
 import { NextFunction, Request, Response } from 'express';
 import UserService from '../services/User.service';
 import log from '../utils/log';
