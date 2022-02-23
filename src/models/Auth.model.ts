@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import { Schema, model, Document } from 'mongoose';
 import { IAuth } from '../interfaces/Auth.interface';
 
-export type IAuthModel = IAuth & mongoose.Document;
+export type IAuthModel = IAuth & Document;
 
-const AuthSchema = new mongoose.Schema<IAuthModel>(
+const AuthSchema = new Schema<IAuthModel>(
   {
     userName: { type: String, required: true },
     userEmail: { type: String, required: true, unique: true },
@@ -15,4 +15,4 @@ const AuthSchema = new mongoose.Schema<IAuthModel>(
   },
 );
 
-export default mongoose.model<IAuthModel>('Auth', AuthSchema);
+export default model<IAuthModel>('Auth', AuthSchema);

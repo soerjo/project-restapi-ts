@@ -31,7 +31,7 @@ class UserController {
 
     try {
       const resCreateDb = await user.create();
-      res.status(200).json(resCreateDb);
+      res.status(200).json({ msg: 'success save data!', data: { resCreateDb } });
     } catch (error) {
       res.status(400).json({ msg: 'canot save data!', error });
     }

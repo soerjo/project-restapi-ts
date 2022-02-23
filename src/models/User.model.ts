@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
-import { IUser } from "../interfaces/user.interface";
+import { Schema, model, Document } from 'mongoose';
+import { IUser } from '../interfaces/user.interface';
 
 export interface ISavedUser extends IUser {
   status: boolean;
 }
 
-export type IUserModel = ISavedUser & mongoose.Document;
+export type IUserModel = ISavedUser & Document;
 
-const userSchema = new mongoose.Schema<IUserModel>(
+export const userSchema = new Schema<IUserModel>(
   {
     userName: { type: String, required: true },
     userEmail: { type: String, required: true, unique: true },
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema<IUserModel>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export default mongoose.model<IUserModel>("User", userSchema);
+export default model<IUserModel>('User', userSchema);

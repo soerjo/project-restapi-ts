@@ -1,24 +1,26 @@
 import http from 'http';
-import { Application, RequestHandler, Router } from 'express';
+import express, { RequestHandler, Router } from 'express';
+import { plugins } from './middleware';
+import routes from './routes';
 import ErrorMiddleware from './middleware/Error.middleware';
 import log from './utils/log';
 
 class App {
-  private app: Application;
-  private port: number;
+  app = express();
 
-  constructor(app: Application, port: number) {
-    this.app = app;
-    this.port = port;
+  constructor() {
+    log.info('building server!');
+    this.plugins(plugins);
+    this.routes(routes);
   }
 
-  public plugins(plugins: RequestHandler[]) {
+  plugins(plugins: RequestHandler[]) {
     plugins.forEach((plugin) => {
       this.app.use(plugin);
     });
   }
 
-  public routes(routes: Router[]) {
+  routes(routes: Router[]) {
     this.app.get('/', (req, res) => res.status(200).json('connection ok!'));
     routes.forEach((route) => {
       this.app.use('/api', route);
@@ -26,9 +28,9 @@ class App {
     this.app.use(ErrorMiddleware);
   }
 
-  public run(): http.Server {
-    return this.app.listen(this.port, async () => {
-      log.info(`app running at http://localhost:${this.port}`);
+  run(port: number): http.Server {
+    return this.app.listen(port, async () => {
+      log.info(`app running at http://localhost:${port}`);
     });
   }
 }

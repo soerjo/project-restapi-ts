@@ -3,10 +3,9 @@ import { updateUserSchema, createUserSchema, getUserbyIdSchema } from '../middle
 import { validation } from '../middleware/validation.midlleware';
 import BaseRoute, { IRoutes } from './BaseRoute';
 import { Methods } from './BaseRoute';
-import { Authorization } from '../middleware/Authorization.middleware';
+// import { Authorization } from '../middleware/Authorization.middleware';
 
 class UserRoutes extends BaseRoute {
-  gateMiddleware = Authorization;
   path = '/user';
 
   routes: IRoutes[] = [
